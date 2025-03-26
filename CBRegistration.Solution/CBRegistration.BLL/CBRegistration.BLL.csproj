@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CBRegistration.DAL\CBRegistration.DAL.csproj" />
+    <ProjectReference Include="..\CBRegistration.Shared\CBRegistration.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace CBRegistration.Shared.Entities
 {
-    public class UserEntity
+    public class UserEntity : BaseEntity
     {
-        public int Id { get; set; }
         public int ICNumber { get; set; }
         public string CustomerName { get; set; } = string.Empty;
         public int MobileNumber { get; set; }
