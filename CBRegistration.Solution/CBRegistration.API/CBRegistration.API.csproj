@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CBRegistration.BLL\CBRegistration.BLL.csproj" />
     <ProjectReference Include="..\CBRegistration.DAL\CBRegistration.DAL.csproj" />
   </ItemGroup>
 

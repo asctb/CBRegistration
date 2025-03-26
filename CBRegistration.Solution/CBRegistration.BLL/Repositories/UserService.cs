@@ -34,7 +34,6 @@ namespace CBRegistration.BLL.Repositories
                 return response;
             }
 
-            // Rest of your validation and creation logic...
             try
             {
                 var createResult = await _userRepository.CreateUserAsync(user);
