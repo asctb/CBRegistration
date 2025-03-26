@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CBRegistration.API.Controllers
 {
+    //POSTMANDAN OLUCAK ŞEKİLDE ROUTE GÜNCELLE
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
@@ -31,6 +32,7 @@ namespace CBRegistration.API.Controllers
 
             var result = await _userService.CreateUserAsync(user);
 
+            //ŞURASI BELKİ NOT FOUND DÖNEBİLİR
             if (!result.Success)
             {
                 return BadRequest(result);
