@@ -1,4 +1,5 @@
-﻿using CBRegistration.BLL.Interfaces;
+﻿using CBRegistration.BLL.Helpers;
+using CBRegistration.BLL.Interfaces;
 using CBRegistration.DAL.Interfaces;
 using CBRegistration.Shared.Entities;
 using CBRegistration.Shared.Models;
@@ -57,6 +58,24 @@ namespace CBRegistration.BLL.Repositories
             }
 
             return response;
+        }
+
+        public async Task<BaseResponseModel<UserEntity>> SetUserPinAsync(int userId, string pin)
+        {
+            var response = new BaseResponseModel<UserEntity>();
+            int intPin = Convert.ToInt32(pin);
+
+            // Additional pin verification if needed
+            if (intPin < 99999 || intPin > 999999)
+            {
+                response.Success = false;
+                response.Message = "PIN must be exactly 6 digits";
+                return response;
+            }
+
+            var securedPin = PinSecurityHelper.HashPin(pin.ToString());
+
+            return await _userRepository.SetUserPinAsync(userId, securedPin);
         }
     }
 }

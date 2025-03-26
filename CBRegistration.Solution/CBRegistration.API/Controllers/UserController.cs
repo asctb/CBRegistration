@@ -7,7 +7,7 @@ namespace CBRegistration.API.Controllers
 {
     //POSTMANDAN OLUCAK ŞEKİLDE ROUTE GÜNCELLE
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]/[action]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -33,6 +33,31 @@ namespace CBRegistration.API.Controllers
             var result = await _userService.CreateUserAsync(user);
 
             //ŞURASI BELKİ NOT FOUND DÖNEBİLİR
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetUserPin([FromBody] SetPinRequestModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new BaseResponseModel
+                {
+                    Success = false,
+                    Message = "Invalid request",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                        .ToList()
+                });
+            }
+
+            var result = await _userService.SetUserPinAsync(request.UserId, request.Pin.ToString());
+
             if (!result.Success)
             {
                 return BadRequest(result);

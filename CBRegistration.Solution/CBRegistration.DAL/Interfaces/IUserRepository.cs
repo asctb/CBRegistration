@@ -12,6 +12,6 @@ namespace CBRegistration.DAL.Interfaces
     {
         Task<BaseResponseModel<UserEntity>> CreateUserAsync(UserEntity user);
         Task<BaseResponseModel<bool>> ICNumberExistsAsync(int icNumber);
-
+        Task<BaseResponseModel<UserEntity>> SetUserPinAsync(int userId, string pin);
     }
 }

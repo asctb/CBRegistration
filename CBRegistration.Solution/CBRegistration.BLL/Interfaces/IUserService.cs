@@ -11,5 +11,6 @@ namespace CBRegistration.BLL.Interfaces
     public interface IUserService
     {
         Task<BaseResponseModel<UserEntity>> CreateUserAsync(UserEntity user);
+        Task<BaseResponseModel<UserEntity>> SetUserPinAsync(int userId, string pin);
     }
 }

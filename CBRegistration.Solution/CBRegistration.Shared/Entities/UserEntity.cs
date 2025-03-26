@@ -12,7 +12,7 @@ namespace CBRegistration.Shared.Entities
         public string CustomerName { get; set; } = string.Empty;
         public int MobileNumber { get; set; }
         public string Email { get; set; } = string.Empty;
-        public int Pin { get; set; }
+        public string Pin { get; set; } = string.Empty;
         public bool IsBiometricLoginEnabled { get; set; } = false;
         public bool HasAcceptedTermsConditions { get; set; } = false;
     }

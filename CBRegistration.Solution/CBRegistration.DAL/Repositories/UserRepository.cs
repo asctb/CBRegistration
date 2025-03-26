@@ -53,14 +53,50 @@ namespace CBRegistration.DAL.Repositories
 
             try
             {
-                response.Data = await _context.Users
-                    .AnyAsync(u => u.ICNumber == icNumber && u.IsActive);
+                bool isExisting = await _context.Users
+                   .AnyAsync(u => u.ICNumber == icNumber && u.IsActive);
 
                 response.Success = true;
+                response.Data = isExisting;
             }
             catch (Exception ex)
             {
                 response.Success = false;
+                response.Errors = new List<string> { ex.Message };
+            }
+
+            return response;
+        }
+
+        public async Task<BaseResponseModel<UserEntity>> SetUserPinAsync(int userId, string pin)
+        {
+            var response = new BaseResponseModel<UserEntity>();
+
+            try
+            {
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == userId && u.IsActive);
+
+                if (user == null)
+                {
+                    response.Success = false;
+                    response.Message = "User not found or inactive";
+                    return response;
+                }
+
+                user.Pin = pin;
+                user.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+
+                response.Success = true;
+                response.Message = "PIN updated successfully";
+                response.Data = user;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "Error updating PIN";
                 response.Errors = new List<string> { ex.Message };
             }
 
