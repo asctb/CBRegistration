@@ -1,4 +1,5 @@
 ﻿using CBRegistration.DAL.Contexts;
+using CBRegistration.DAL.Interfaces;
 using CBRegistration.Shared.Entities;
 using CBRegistration.Shared.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CBRegistration.DAL.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
 

@@ -1,4 +1,5 @@
-﻿using CBRegistration.DAL.Interfaces;
+﻿using CBRegistration.BLL.Interfaces;
+using CBRegistration.DAL.Interfaces;
 using CBRegistration.Shared.Entities;
 using CBRegistration.Shared.Models;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CBRegistration.BLL.Repositories
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
 
@@ -23,7 +24,7 @@ namespace CBRegistration.BLL.Repositories
         {
             var response = new BaseResponseModel<UserEntity>();
 
-            var icNumberCheck = await _userRepository.IcNumberExistsAsync(user.ICNumber);
+            var icNumberCheck = await _userRepository.ICNumberExistsAsync(user.ICNumber);
             if (!icNumberCheck.Success || icNumberCheck.Data)
             {
                 response.Success = false;
