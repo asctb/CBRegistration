@@ -64,5 +64,44 @@ namespace CBRegistration.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateBiometricLogin([FromBody] UpdateBiometricRequestModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new BaseResponseModel
+                {
+                    Success = false,
+                    Message = "Invalid request",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                        .ToList()
+                });
+            }
+
+            var result = await _userService.UpdateBiometricLoginAsync(request.UserId, request.IsEnabled);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AcceptTermsAndConditionsAsync([FromBody] UpdateTermsAndCondsRequestModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new BaseResponseModel
+                {
+                    Success = false,
+                    Message = "Invalid request",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                        .ToList()
+                });
+            }
+
+            var result = await _userService.AcceptTermsAndConditionsAsync(request.UserId);
+            return Ok(result);
+        }
+
     }
 }

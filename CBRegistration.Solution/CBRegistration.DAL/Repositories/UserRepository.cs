@@ -72,6 +72,42 @@ namespace CBRegistration.DAL.Repositories
             return response;
         }
 
+        public async Task<BaseResponseModel<UserEntity>> UpdateAsync(int userId, Action<UserEntity> updateAction)
+        {
+            var response = new BaseResponseModel<UserEntity>();
+
+            try
+            {
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == userId && u.IsActive);
+
+                if (user == null)
+                {
+                    response.Success = false;
+                    response.Message = "User not found or inactive";
+                    return response;
+                }
+
+                updateAction(user);
+
+                user.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+
+                response.Data = user;
+                response.Success = true;
+                response.Message = "User updated successfully";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "Error updating user";
+                response.Errors = new List<string> { ex.Message };
+            }
+
+            return response;
+        }
+
         public async Task<BaseResponseModel<bool>> ICNumberExistsAsync(int icNumber)
         {
             var response = new BaseResponseModel<bool>();

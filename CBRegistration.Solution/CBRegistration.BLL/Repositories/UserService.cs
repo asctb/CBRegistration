@@ -90,7 +90,10 @@ namespace CBRegistration.BLL.Repositories
 
             var securedPin = PinSecurityHelper.HashPin(pin.ToString());
 
-            return await _userRepository.SetUserPinAsync(userId, securedPin);
+            return await _userRepository.UpdateAsync(userId, user =>
+            {
+                user.Pin = securedPin;
+            });
         }
 
         public async Task<BaseResponseModel<UserEntity>> ConfirmUserPin(int userId, string pin)
@@ -118,6 +121,80 @@ namespace CBRegistration.BLL.Repositories
             response.Success = true;
             response.Message = "User pin is matched.";
             return response;
+        }
+
+        public async Task<BaseResponseModel<UserEntity>> UpdateBiometricLoginAsync(int userId, bool isEnabled)
+        {
+            try
+            {
+                var result = await _userRepository.UpdateAsync(userId, user =>
+                {
+                    user.IsBiometricLoginEnabled = isEnabled;
+                });
+
+                if (!result.Success)
+                {
+                    return new BaseResponseModel<UserEntity>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
+                return new BaseResponseModel<UserEntity>
+                {
+                    Success = true,
+                    Message = $"Biometric login {(isEnabled ? "enabled" : "disabled")} successfully",
+                    Data = result.Data
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseModel<UserEntity>
+                {
+                    Success = false,
+                    Message = "Error updating biometric login status",
+                    Errors = [ex.Message]
+                };
+            }
+        }
+
+        public async Task<BaseResponseModel<UserEntity>> AcceptTermsAndConditionsAsync(int userId)
+        {
+            try
+            {
+                var result = await _userRepository.UpdateAsync(userId, user =>
+                {
+                    user.HasAcceptedTermsConditions = true;
+                });
+
+                if (!result.Success)
+                {
+                    return new BaseResponseModel<UserEntity>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
+                return new BaseResponseModel<UserEntity>
+                {
+                    Success = true,
+                    Message = "Terms and conditions accepted successfully",
+                    Data = result.Data
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseModel<UserEntity>
+                {
+                    Success = false,
+                    Message = "Error accepting terms and conditions",
+                    Errors = new List<string> { ex.Message }
+                };
+            }
         }
     }
 }
