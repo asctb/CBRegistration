@@ -1,4 +1,5 @@
-﻿using CBRegistration.BLL.Interfaces;
+﻿using AutoMapper;
+using CBRegistration.BLL.Interfaces;
 using CBRegistration.Shared.Entities;
 using CBRegistration.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,13 @@ namespace CBRegistration.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserService userService)
+
+        public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -29,7 +33,8 @@ namespace CBRegistration.API.Controllers
                 });
             }
 
-            var result = await _userService.CreateUserAsync(user);
+            var userModel = _mapper.Map<UserEntity>(user);
+            var result = await _userService.CreateUserAsync(userModel);
 
             //ŞURASI BELKİ NOT FOUND DÖNEBİLİR
             if (!result.Success)

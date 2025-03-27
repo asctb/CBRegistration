@@ -21,6 +21,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 
 var app = builder.Build();
 

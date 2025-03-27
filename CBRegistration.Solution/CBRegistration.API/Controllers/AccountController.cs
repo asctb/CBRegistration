@@ -16,7 +16,7 @@ namespace CBRegistration.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetUserPin([FromBody] SetPinRequestModel request)
+        public async Task<IActionResult> SetUserPinAsync([FromBody] PinRequestModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -41,7 +41,7 @@ namespace CBRegistration.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ConfirmUserPin([FromBody] SetPinRequestModel request)
+        public async Task<IActionResult> ConfirmUserPinAsync([FromBody] PinRequestModel request)
         {
             if (!ModelState.IsValid)
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CBRegistration.Shared.Models
 {
-    public class SetPinRequestModel
+    public class PinRequestModel
     {
         public int UserId { get; set; }
         public int Pin { get; set; }
