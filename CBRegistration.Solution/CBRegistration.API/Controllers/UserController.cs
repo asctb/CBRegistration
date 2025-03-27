@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CBRegistration.API.Controllers
 {
-    //POSTMANDAN OLUCAK ŞEKİLDE ROUTE GÜNCELLE
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class UserController : ControllerBase

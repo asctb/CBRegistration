@@ -21,6 +21,31 @@ namespace CBRegistration.DAL.Repositories
             _context = context;
         }
 
+        public async Task<BaseResponseModel<UserEntity>> GetByIdAsync(int id)
+        {
+            var response = new BaseResponseModel<UserEntity>();
+
+            try
+            {
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
+
+                response.Success = true;
+                response.Message = response.Data != null
+                    ? "User retrieved successfully"
+                    : "User not found";
+                response.Data = user;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "Error retrieving item";
+                response.Errors = new List<string> { ex.Message };
+            }
+
+            return response;
+        }
+
         public async Task<BaseResponseModel<UserEntity>> CreateUserAsync(UserEntity user)
         {
             var response = new BaseResponseModel<UserEntity>();

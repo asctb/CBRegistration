@@ -10,6 +10,7 @@ namespace CBRegistration.DAL.Interfaces
 {
     public interface IUserRepository
     {
+        Task<BaseResponseModel<UserEntity>> GetByIdAsync(int id);
         Task<BaseResponseModel<UserEntity>> CreateUserAsync(UserEntity user);
         Task<BaseResponseModel<bool>> ICNumberExistsAsync(int icNumber);
         Task<BaseResponseModel<UserEntity>> SetUserPinAsync(int userId, string pin);

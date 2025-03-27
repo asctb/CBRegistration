@@ -65,6 +65,21 @@ namespace CBRegistration.BLL.Repositories
             var response = new BaseResponseModel<UserEntity>();
             int intPin = Convert.ToInt32(pin);
 
+            var userResponse = await _userRepository.GetByIdAsync(userId);
+            if (!userResponse.Success || userResponse.Data == null)
+            {
+                response.Success = false;
+                response.Message = "User not found or inactive";
+                return response;
+            }
+
+            if (!userResponse.Data.HasAcceptedTermsConditions)
+            {
+                response.Success = false;
+                response.Message = "User did not accepted Terms and Conditions";
+                return response;
+            }
+
             // Additional pin verification if needed
             if (intPin < 99999 || intPin > 999999)
             {
