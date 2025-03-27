@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CBRegistration.BLL.Helpers
 {
-    public class PinSecurityHelper
+    internal static class PinSecurityHelper
     {
         private const int SaltSize = 16;
         private const int Iterations = 100000;

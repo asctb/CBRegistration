@@ -31,10 +31,10 @@ namespace CBRegistration.DAL.Repositories
                     .FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
 
                 response.Success = true;
+                response.Data = user;
                 response.Message = response.Data != null
                     ? "User retrieved successfully"
                     : "User not found";
-                response.Data = user;
             }
             catch (Exception ex)
             {
@@ -59,8 +59,8 @@ namespace CBRegistration.DAL.Repositories
                 await _context.SaveChangesAsync();
 
                 response.Success = true;
-                response.Message = "User created successfully";
                 response.Data = user;
+                response.Message = "User created successfully";
             }
             catch (Exception ex)
             {

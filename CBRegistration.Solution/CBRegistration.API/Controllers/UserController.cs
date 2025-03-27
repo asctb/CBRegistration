@@ -40,29 +40,5 @@ namespace CBRegistration.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SetUserPin([FromBody] SetPinRequestModel request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new BaseResponseModel
-                {
-                    Success = false,
-                    Message = "Invalid request",
-                    Errors = ModelState.Values
-                        .SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
-                        .ToList()
-                });
-            }
-
-            var result = await _userService.SetUserPinAsync(request.UserId, request.Pin.ToString());
-
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result);
-        }
     }
 }
