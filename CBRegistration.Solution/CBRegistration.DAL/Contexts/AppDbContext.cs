@@ -17,6 +17,14 @@ namespace CBRegistration.DAL.Contexts
             modelBuilder.Entity<UserEntity>()
                 .Property(b => b.IsActive)
                 .HasDefaultValue(true);
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(b => b.IsBiometricLoginEnabled)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(b => b.HasAcceptedTermsConditions)
+                .HasDefaultValue(false);
         }
     }
 }

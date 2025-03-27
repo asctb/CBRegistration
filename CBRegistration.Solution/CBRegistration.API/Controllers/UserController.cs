@@ -17,7 +17,7 @@ namespace CBRegistration.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] UserEntity user)
+        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserAsyncModel user)
         {
             if (!ModelState.IsValid)
             {
