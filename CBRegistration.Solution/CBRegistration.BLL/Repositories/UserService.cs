@@ -63,7 +63,7 @@ namespace CBRegistration.BLL.Repositories
             return response;
         }
 
-        public async Task<BaseResponseModel<UserModel>> SetUserPinAsync(int userId, string pin)
+        public async Task<BaseResponseModel<UserModel>> UpdateUserPinAsync(int userId, string pin)
         {
             var response = new BaseResponseModel<UserModel>();
             int intPin = Convert.ToInt32(pin);
@@ -222,7 +222,7 @@ namespace CBRegistration.BLL.Repositories
             }
         }
 
-        public async Task<BaseResponseModel<UserModel>> UpdateBiometricLoginAsync(int userId, bool isEnabled)
+        public async Task<BaseResponseModel<UserModel>> SetBiometricLoginAsync(int userId, bool isEnabled)
         {
             try
             {
@@ -259,13 +259,13 @@ namespace CBRegistration.BLL.Repositories
             }
         }
 
-        public async Task<BaseResponseModel<UserModel>> AcceptTermsAndConditionsAsync(int userId)
+        public async Task<BaseResponseModel<UserModel>> SetTermsAndConditionsAsync(int userId, bool isAccepted)
         {
             try
             {
                 var result = await _userRepository.UpdateAsync(userId, user =>
                 {
-                    user.HasAcceptedTermsConditions = true;
+                    user.HasAcceptedTermsConditions = isAccepted;
                 });
 
                 if (!result.Success)
@@ -281,7 +281,7 @@ namespace CBRegistration.BLL.Repositories
                 return new BaseResponseModel<UserModel>
                 {
                     Success = true,
-                    Message = "Terms and conditions accepted successfully",
+                    Message = $"Terms and conditions {(isAccepted ? "accepted" : "refused")} successfully",
                     Data = result.Data
                 };
             }

@@ -16,7 +16,7 @@ namespace CBRegistration.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetUserPinAsync([FromBody] PinRequestModel request)
+        public async Task<IActionResult> UpdateUserPinAsync([FromBody] ConfirmPinRequestModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -30,7 +30,7 @@ namespace CBRegistration.API.Controllers
                 });
             }
 
-            var result = await _userService.SetUserPinAsync(request.UserId, request.Pin.ToString());
+            var result = await _userService.UpdateUserPinAsync(request.UserId, request.Pin.ToString());
 
             if (!result.Success)
             {
@@ -41,7 +41,7 @@ namespace CBRegistration.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ConfirmUserPinAsync([FromBody] PinRequestModel request)
+        public async Task<IActionResult> ConfirmUserPinAsync([FromBody] ConfirmPinRequestModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -129,7 +129,7 @@ namespace CBRegistration.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateBiometricLogin([FromBody] UpdateBiometricRequestModel request)
+        public async Task<IActionResult> SetBiometricLogin([FromBody] SetBiometricRequestModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -143,12 +143,12 @@ namespace CBRegistration.API.Controllers
                 });
             }
 
-            var result = await _userService.UpdateBiometricLoginAsync(request.UserId, request.IsEnabled);
+            var result = await _userService.SetBiometricLoginAsync(request.UserId, request.IsEnabled);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AcceptTermsAndConditionsAsync([FromBody] UpdateTermsAndCondsRequestModel request)
+        public async Task<IActionResult> SetTermsAndConditionsAsync([FromBody] SetTermsAndCondsRequestModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -162,7 +162,7 @@ namespace CBRegistration.API.Controllers
                 });
             }
 
-            var result = await _userService.AcceptTermsAndConditionsAsync(request.UserId);
+            var result = await _userService.SetTermsAndConditionsAsync(request.UserId, request.IsAccepted);
             return Ok(result);
         }
 

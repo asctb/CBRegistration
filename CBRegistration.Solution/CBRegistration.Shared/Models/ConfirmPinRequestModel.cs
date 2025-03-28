@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace CBRegistration.Shared.Models
 {
-    public class UpdateBiometricRequestModel
+    public class ConfirmPinRequestModel
     {
         public int UserId { get; set; }
-        public bool IsEnabled { get; set; }
-
+        public int Pin { get; set; }
     }
 }

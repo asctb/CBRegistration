@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace CBRegistration.Shared.Models
 {
-    public class UpdateTermsAndCondsRequestModel
+    public class SetTermsAndCondsRequestModel
     {
         public int UserId { get; set; }
+        public bool IsAccepted { get; set; }
+
     }
 }

@@ -9,6 +9,6 @@ namespace CBRegistration.Shared.Models
     public class PinModel
     {
         public int UserId { get; set; }
-        public string Pin { get; set; }
+        public string Pin { get; set; } = string.Empty;
     }
 }
