@@ -33,7 +33,7 @@ namespace CBRegistration.API.Controllers
                 });
             }
 
-            var userModel = _mapper.Map<UserEntity>(user);
+            var userModel = _mapper.Map<CreateUserModel>(user);
             var result = await _userService.CreateUserAsync(userModel);
 
             //ŞURASI BELKİ NOT FOUND DÖNEBİLİR

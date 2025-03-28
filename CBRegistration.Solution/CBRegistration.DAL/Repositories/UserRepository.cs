@@ -1,4 +1,5 @@
-﻿using CBRegistration.DAL.Contexts;
+﻿using AutoMapper;
+using CBRegistration.DAL.Contexts;
 using CBRegistration.DAL.Interfaces;
 using CBRegistration.Shared.Entities;
 using CBRegistration.Shared.Models;
@@ -15,10 +16,12 @@ namespace CBRegistration.DAL.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(AppDbContext context)
+        public UserRepository(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<BaseResponseModel<UserEntity>> GetByIdAsync(int id)
@@ -71,20 +74,24 @@ namespace CBRegistration.DAL.Repositories
             return response;
         }
 
-        public async Task<BaseResponseModel<UserEntity>> CreateUserAsync(UserEntity user)
+        public async Task<BaseResponseModel<UserModel>> CreateUserAsync(UserModel user)
         {
-            var response = new BaseResponseModel<UserEntity>();
+            var response = new BaseResponseModel<UserModel>();
 
             try
             {
-                user.CreatedAt = DateTime.UtcNow;
-                user.IsActive = true;
+                var userEntity = _mapper.Map<UserEntity>(user);
 
-                await _context.Users.AddAsync(user);
+                userEntity.CreatedAt = DateTime.UtcNow;
+                userEntity.IsActive = true;
+
+                await _context.Users.AddAsync(userEntity);
                 await _context.SaveChangesAsync();
 
+                var userModel = _mapper.Map<UserModel>(userEntity);
+
                 response.Success = true;
-                response.Data = user;
+                response.Data = userModel;
                 response.Message = "User created successfully";
             }
             catch (Exception ex)

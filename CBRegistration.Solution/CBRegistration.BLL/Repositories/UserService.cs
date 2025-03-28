@@ -1,4 +1,5 @@
-﻿using CBRegistration.BLL.Helpers;
+﻿using AutoMapper;
+using CBRegistration.BLL.Helpers;
 using CBRegistration.BLL.Interfaces;
 using CBRegistration.DAL.Interfaces;
 using CBRegistration.Shared.Entities;
@@ -14,16 +15,17 @@ namespace CBRegistration.BLL.Repositories
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        //CREATE USER MODEL, SERVICE SHOULDNT BE USING ENTITIES DIRECTLY
-        public async Task<BaseResponseModel<UserEntity>> CreateUserAsync(UserEntity user)
+        public async Task<BaseResponseModel<UserModel>> CreateUserAsync(CreateUserModel user)
         {
-            var response = new BaseResponseModel<UserEntity>();
+            var response = new BaseResponseModel<UserModel>();
 
             var icNumberCheck = await _userRepository.ICNumberExistsAsync(user.ICNumber);
             if (!icNumberCheck.Success || icNumberCheck.Data)
@@ -38,7 +40,8 @@ namespace CBRegistration.BLL.Repositories
 
             try
             {
-                var createResult = await _userRepository.CreateUserAsync(user);
+                var userModel = _mapper.Map<UserModel>(user);
+                var createResult = await _userRepository.CreateUserAsync(userModel);
                 if (createResult.Success)
                 {
                     response.Success = true;

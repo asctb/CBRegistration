@@ -8,7 +8,9 @@ namespace CBRegistration.API.Mapper
     {
         public UserProfile()
         {
-            CreateMap<CreateUserAsyncModel, UserEntity>();
+            CreateMap<CreateUserAsyncModel, CreateUserModel>();
+            CreateMap<CreateUserModel, UserModel>();
+            CreateMap<UserEntity, UserModel>().ReverseMap();
         }
     }
 }
