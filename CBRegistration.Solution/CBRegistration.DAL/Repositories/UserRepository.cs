@@ -74,6 +74,31 @@ namespace CBRegistration.DAL.Repositories
             return response;
         }
 
+        public async Task<BaseResponseModel<PinModel>> GetSecuredPinById(int id)
+        {
+            var response = new BaseResponseModel<PinModel>();
+
+            try
+            {
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
+
+                response.Success = true;
+                response.Data = _mapper.Map<PinModel>(user);
+                response.Message = response.Data != null
+                    ? "User retrieved successfully"
+                    : "User not found";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "Error retrieving item";
+                response.Errors = new List<string> { ex.Message };
+            }
+
+            return response;
+        }
+
         public async Task<BaseResponseModel<UserModel>> CreateUserAsync(UserModel user)
         {
             var response = new BaseResponseModel<UserModel>();

@@ -12,6 +12,7 @@ namespace CBRegistration.DAL.Interfaces
     {
         Task<BaseResponseModel<UserEntity>> GetByIdAsync(int id);
         Task<BaseResponseModel<UserModel>> GetByIcNumber(int icNumber);
+        Task<BaseResponseModel<PinModel>> GetSecuredPinById(int id);
         Task<BaseResponseModel<UserModel>> CreateUserAsync(UserModel user);
         Task<BaseResponseModel<UserModel>> UpdateAsync(int userId, Action<UserEntity> updateAction);
         Task<BaseResponseModel<bool>> ICNumberExistsAsync(int icNumber);

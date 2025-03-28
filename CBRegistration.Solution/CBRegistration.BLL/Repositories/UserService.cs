@@ -99,20 +99,20 @@ namespace CBRegistration.BLL.Repositories
             });
         }
 
-        public async Task<BaseResponseModel<UserEntity>> ConfirmUserPin(int userId, string pin)
+        public async Task<BaseResponseModel<PinModel>> ConfirmUserPinAsync(int userId, string pin)
         {
-            var response = new BaseResponseModel<UserEntity>();
+            var response = new BaseResponseModel<PinModel>();
             string securedPin = PinSecurityHelper.HashPin(pin.ToString());
 
-            var userResponse = await _userRepository.GetByIdAsync(userId);
-            if (!userResponse.Success || userResponse.Data == null)
+            var pinResponse = await _userRepository.GetSecuredPinById(userId);
+            if (!pinResponse.Success || pinResponse.Data == null)
             {
                 response.Success = false;
                 response.Message = "User not found or inactive";
                 return response;
             }
 
-            bool hasPinMatched = PinSecurityHelper.VerifyPin(pin, userResponse.Data.Pin);
+            bool hasPinMatched = PinSecurityHelper.VerifyPin(pin, pinResponse.Data.Pin);
 
             if (!hasPinMatched)
             {

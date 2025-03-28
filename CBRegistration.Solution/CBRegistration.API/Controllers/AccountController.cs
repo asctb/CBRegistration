@@ -55,7 +55,7 @@ namespace CBRegistration.API.Controllers
                 });
             }
 
-            var result = await _userService.ConfirmUserPin(request.UserId, request.Pin.ToString());
+            var result = await _userService.ConfirmUserPinAsync(request.UserId, request.Pin.ToString());
 
             if (!result.Success)
             {
