@@ -144,6 +144,84 @@ namespace CBRegistration.BLL.Repositories
             return response;
         }
 
+        public async Task<BaseResponseModel<UserModel>> SetPhoneVerified(int userId, bool isVerified)
+        {
+            try
+            {   
+                //Verify via users phone with SMS gateway service
+
+                var result = await _userRepository.UpdateAsync(userId, user =>
+                {
+                    user.HasVerfiedPhone = isVerified;
+                });
+
+                if (!result.Success)
+                {
+                    return new BaseResponseModel<UserModel>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
+                return new BaseResponseModel<UserModel>
+                {
+                    Success = true,
+                    Message = $"User {(isVerified ? "enabled" : "disabled")} phone number successfully",
+                    Data = result.Data
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseModel<UserModel>
+                {
+                    Success = false,
+                    Message = "Error verifying user phone number",
+                    Errors = [ex.Message]
+                };
+            }
+        }
+
+        public async Task<BaseResponseModel<UserModel>> SetEmailVerified(int userId, bool isVerified)
+        {
+            try
+            {
+                //Verify via users phone with SMTP server service 
+
+                var result = await _userRepository.UpdateAsync(userId, user =>
+                {
+                    user.HasVerifiedEmail = isVerified;
+                });
+
+                if (!result.Success)
+                {
+                    return new BaseResponseModel<UserModel>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
+                return new BaseResponseModel<UserModel>
+                {
+                    Success = true,
+                    Message = $"User {(isVerified ? "enabled" : "disabled")} email successfully",
+                    Data = result.Data
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseModel<UserModel>
+                {
+                    Success = false,
+                    Message = "Error verifying user email",
+                    Errors = [ex.Message]
+                };
+            }
+        }
+
         public async Task<BaseResponseModel<UserModel>> UpdateBiometricLoginAsync(int userId, bool isEnabled)
         {
             try
@@ -216,6 +294,6 @@ namespace CBRegistration.BLL.Repositories
                     Errors = new List<string> { ex.Message }
                 };
             }
-        }       
+        }
     }
 }

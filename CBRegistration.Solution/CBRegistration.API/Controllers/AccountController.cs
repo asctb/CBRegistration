@@ -91,6 +91,44 @@ namespace CBRegistration.API.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> SetPhoneVerified([FromBody] SetPhoneVerifiedRequestModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new BaseResponseModel
+                {
+                    Success = false,
+                    Message = "Invalid request",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                        .ToList()
+                });
+            }
+
+            var result = await _userService.SetPhoneVerified(request.UserId, request.IsVerified);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetEmailVerified([FromBody] SetEmailVerifiedRequestModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new BaseResponseModel
+                {
+                    Success = false,
+                    Message = "Invalid request",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                        .ToList()
+                });
+            }
+
+            var result = await _userService.SetEmailVerified(request.UserId, request.IsVerified);
+            return Ok(result);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> UpdateBiometricLogin([FromBody] UpdateBiometricRequestModel request)
         {
             if (!ModelState.IsValid)
