@@ -123,6 +123,24 @@ namespace CBRegistration.BLL.Repositories
             return response;
         }
 
+        public async Task<BaseResponseModel<UserEntity>> LoginUserAsync(int icNumber)
+        {
+            var response = new BaseResponseModel<UserEntity>();
+
+            var userResponse = await _userRepository.GetByIcNumber(icNumber);
+            if (!userResponse.Success || userResponse.Data == null)
+            {
+                response.Success = false;
+                response.Message = "User not found or inactive";
+                return response;
+            }
+
+            response.Success = true;
+            response.Message = "User retrieved successfully";
+            response.Data = userResponse.Data;
+            return response;
+        }
+
         public async Task<BaseResponseModel<UserEntity>> UpdateBiometricLoginAsync(int userId, bool isEnabled)
         {
             try
@@ -195,6 +213,6 @@ namespace CBRegistration.BLL.Repositories
                     Errors = new List<string> { ex.Message }
                 };
             }
-        }
+        }       
     }
 }

@@ -13,6 +13,7 @@ namespace CBRegistration.BLL.Interfaces
         Task<BaseResponseModel<UserEntity>> CreateUserAsync(UserEntity user);
         Task<BaseResponseModel<UserEntity>> SetUserPinAsync(int userId, string pin);
         Task<BaseResponseModel<UserEntity>> ConfirmUserPin(int userId, string pin);
+        Task<BaseResponseModel<UserEntity>> LoginUserAsync(int icNumber);
         Task<BaseResponseModel<UserEntity>> UpdateBiometricLoginAsync(int userId, bool isEnabled);
         Task<BaseResponseModel<UserEntity>> AcceptTermsAndConditionsAsync(int userId);
     }

@@ -11,6 +11,7 @@ namespace CBRegistration.DAL.Interfaces
     public interface IUserRepository
     {
         Task<BaseResponseModel<UserEntity>> GetByIdAsync(int id);
+        Task<BaseResponseModel<UserEntity>> GetByIcNumber(int icNumber);
         Task<BaseResponseModel<UserEntity>> CreateUserAsync(UserEntity user);
         Task<BaseResponseModel<UserEntity>> UpdateAsync(int userId, Action<UserEntity> updateAction);
         Task<BaseResponseModel<bool>> ICNumberExistsAsync(int icNumber);
