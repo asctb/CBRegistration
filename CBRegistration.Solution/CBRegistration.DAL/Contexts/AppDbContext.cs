@@ -25,6 +25,14 @@ namespace CBRegistration.DAL.Contexts
             modelBuilder.Entity<UserEntity>()
                 .Property(b => b.HasAcceptedTermsConditions)
                 .HasDefaultValue(false);
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(b => b.HasVerifiedEmail)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(b => b.HasVerfiedPhone)
+                .HasDefaultValue(false);
         }
     }
 }

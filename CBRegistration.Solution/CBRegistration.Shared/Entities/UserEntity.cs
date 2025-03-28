@@ -13,7 +13,9 @@ namespace CBRegistration.Shared.Entities
         public int MobileNumber { get; set; }
         public string Email { get; set; } = string.Empty;
         public string Pin { get; set; } = string.Empty;
-        public bool IsBiometricLoginEnabled { get; set; } = false;
+        public bool HasVerfiedPhone { get; set; } = false;
+        public bool HasVerifiedEmail { get; set; } = false;
         public bool HasAcceptedTermsConditions { get; set; } = false;
+        public bool IsBiometricLoginEnabled { get; set; } = false;
     }
 }
