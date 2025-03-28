@@ -49,9 +49,9 @@ namespace CBRegistration.DAL.Repositories
             return response;
         }
 
-        public async Task<BaseResponseModel<UserEntity>> GetByIcNumber(int icNumber)
+        public async Task<BaseResponseModel<UserModel>> GetByIcNumber(int icNumber)
         {
-            var response = new BaseResponseModel<UserEntity>();
+            var response = new BaseResponseModel<UserModel>();
 
             try
             {
@@ -59,7 +59,7 @@ namespace CBRegistration.DAL.Repositories
                     .FirstOrDefaultAsync(u => u.ICNumber == icNumber && u.IsActive);
 
                 response.Success = true;
-                response.Data = user;
+                response.Data = _mapper.Map<UserModel>(user);
                 response.Message = response.Data != null
                     ? "User retrieved successfully"
                     : "User not found";
@@ -104,9 +104,9 @@ namespace CBRegistration.DAL.Repositories
             return response;
         }
 
-        public async Task<BaseResponseModel<UserEntity>> UpdateAsync(int userId, Action<UserEntity> updateAction)
+        public async Task<BaseResponseModel<UserModel>> UpdateAsync(int userId, Action<UserEntity> updateAction)
         {
-            var response = new BaseResponseModel<UserEntity>();
+            var response = new BaseResponseModel<UserModel>();
 
             try
             {
@@ -126,7 +126,7 @@ namespace CBRegistration.DAL.Repositories
 
                 await _context.SaveChangesAsync();
 
-                response.Data = user;
+                response.Data = _mapper.Map<UserModel>(user);
                 response.Success = true;
                 response.Message = "User updated successfully";
             }
@@ -155,41 +155,6 @@ namespace CBRegistration.DAL.Repositories
             catch (Exception ex)
             {
                 response.Success = false;
-                response.Errors = new List<string> { ex.Message };
-            }
-
-            return response;
-        }
-
-        public async Task<BaseResponseModel<UserEntity>> SetUserPinAsync(int userId, string pin)
-        {
-            var response = new BaseResponseModel<UserEntity>();
-
-            try
-            {
-                var user = await _context.Users
-                    .FirstOrDefaultAsync(u => u.Id == userId && u.IsActive);
-
-                if (user == null)
-                {
-                    response.Success = false;
-                    response.Message = "User not found or inactive";
-                    return response;
-                }
-
-                user.Pin = pin;
-                user.UpdatedAt = DateTime.UtcNow;
-
-                await _context.SaveChangesAsync();
-
-                response.Success = true;
-                response.Message = "PIN updated successfully";
-                response.Data = user;
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = "Error updating PIN";
                 response.Errors = new List<string> { ex.Message };
             }
 

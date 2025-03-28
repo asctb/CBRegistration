@@ -63,9 +63,9 @@ namespace CBRegistration.BLL.Repositories
             return response;
         }
 
-        public async Task<BaseResponseModel<UserEntity>> SetUserPinAsync(int userId, string pin)
+        public async Task<BaseResponseModel<UserModel>> SetUserPinAsync(int userId, string pin)
         {
-            var response = new BaseResponseModel<UserEntity>();
+            var response = new BaseResponseModel<UserModel>();
             int intPin = Convert.ToInt32(pin);
 
             var userResponse = await _userRepository.GetByIdAsync(userId);
@@ -126,9 +126,9 @@ namespace CBRegistration.BLL.Repositories
             return response;
         }
 
-        public async Task<BaseResponseModel<UserEntity>> LoginUserAsync(int icNumber)
+        public async Task<BaseResponseModel<UserModel>> LoginUserAsync(int icNumber)
         {
-            var response = new BaseResponseModel<UserEntity>();
+            var response = new BaseResponseModel<UserModel>();
 
             var userResponse = await _userRepository.GetByIcNumber(icNumber);
             if (!userResponse.Success || userResponse.Data == null)
@@ -144,7 +144,7 @@ namespace CBRegistration.BLL.Repositories
             return response;
         }
 
-        public async Task<BaseResponseModel<UserEntity>> UpdateBiometricLoginAsync(int userId, bool isEnabled)
+        public async Task<BaseResponseModel<UserModel>> UpdateBiometricLoginAsync(int userId, bool isEnabled)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace CBRegistration.BLL.Repositories
 
                 if (!result.Success)
                 {
-                    return new BaseResponseModel<UserEntity>
+                    return new BaseResponseModel<UserModel>
                     {
                         Success = false,
                         Message = result.Message,
@@ -163,7 +163,7 @@ namespace CBRegistration.BLL.Repositories
                     };
                 }
 
-                return new BaseResponseModel<UserEntity>
+                return new BaseResponseModel<UserModel>
                 {
                     Success = true,
                     Message = $"Biometric login {(isEnabled ? "enabled" : "disabled")} successfully",
@@ -172,7 +172,7 @@ namespace CBRegistration.BLL.Repositories
             }
             catch (Exception ex)
             {
-                return new BaseResponseModel<UserEntity>
+                return new BaseResponseModel<UserModel>
                 {
                     Success = false,
                     Message = "Error updating biometric login status",
@@ -181,7 +181,7 @@ namespace CBRegistration.BLL.Repositories
             }
         }
 
-        public async Task<BaseResponseModel<UserEntity>> AcceptTermsAndConditionsAsync(int userId)
+        public async Task<BaseResponseModel<UserModel>> AcceptTermsAndConditionsAsync(int userId)
         {
             try
             {
@@ -192,7 +192,7 @@ namespace CBRegistration.BLL.Repositories
 
                 if (!result.Success)
                 {
-                    return new BaseResponseModel<UserEntity>
+                    return new BaseResponseModel<UserModel>
                     {
                         Success = false,
                         Message = result.Message,
@@ -200,7 +200,7 @@ namespace CBRegistration.BLL.Repositories
                     };
                 }
 
-                return new BaseResponseModel<UserEntity>
+                return new BaseResponseModel<UserModel>
                 {
                     Success = true,
                     Message = "Terms and conditions accepted successfully",
@@ -209,7 +209,7 @@ namespace CBRegistration.BLL.Repositories
             }
             catch (Exception ex)
             {
-                return new BaseResponseModel<UserEntity>
+                return new BaseResponseModel<UserModel>
                 {
                     Success = false,
                     Message = "Error accepting terms and conditions",

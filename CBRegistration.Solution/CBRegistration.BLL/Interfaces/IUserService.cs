@@ -11,10 +11,10 @@ namespace CBRegistration.BLL.Interfaces
     public interface IUserService
     {
         Task<BaseResponseModel<UserModel>> CreateUserAsync(CreateUserModel user);
-        Task<BaseResponseModel<UserEntity>> SetUserPinAsync(int userId, string pin);
+        Task<BaseResponseModel<UserModel>> SetUserPinAsync(int userId, string pin);
         Task<BaseResponseModel<UserEntity>> ConfirmUserPin(int userId, string pin);
-        Task<BaseResponseModel<UserEntity>> LoginUserAsync(int icNumber);
-        Task<BaseResponseModel<UserEntity>> UpdateBiometricLoginAsync(int userId, bool isEnabled);
-        Task<BaseResponseModel<UserEntity>> AcceptTermsAndConditionsAsync(int userId);
+        Task<BaseResponseModel<UserModel>> LoginUserAsync(int icNumber);
+        Task<BaseResponseModel<UserModel>> UpdateBiometricLoginAsync(int userId, bool isEnabled);
+        Task<BaseResponseModel<UserModel>> AcceptTermsAndConditionsAsync(int userId);
     }
 }
