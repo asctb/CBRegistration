@@ -9,6 +9,5 @@ namespace CBRegistration.Shared.Models
     public class SetEmailVerifiedRequestModel
     {
         public int UserId { get; set; }
-        public bool IsVerified { get; set; }
     }
 }

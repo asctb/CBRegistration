@@ -105,7 +105,7 @@ namespace CBRegistration.API.Controllers
                 });
             }
 
-            var result = await _userService.SetPhoneVerified(request.UserId, request.IsVerified);
+            var result = await _userService.SetPhoneVerified(request.UserId);
             return Ok(result);
         }
 
@@ -124,7 +124,7 @@ namespace CBRegistration.API.Controllers
                 });
             }
 
-            var result = await _userService.SetEmailVerified(request.UserId, request.IsVerified);
+            var result = await _userService.SetEmailVerified(request.UserId);
             return Ok(result);
         }
 

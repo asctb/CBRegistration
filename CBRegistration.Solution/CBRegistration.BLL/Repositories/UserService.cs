@@ -15,11 +15,13 @@ namespace CBRegistration.BLL.Repositories
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUserVerificationService _userVerificationService;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IUserVerificationService userVerificationService, IMapper mapper)
         {
             _userRepository = userRepository;
+            _userVerificationService = userVerificationService;
             _mapper = mapper;
         }
 
@@ -83,14 +85,6 @@ namespace CBRegistration.BLL.Repositories
                 return response;
             }
 
-            // Additional pin verification if needed
-            if (intPin < 99999 || intPin > 999999)
-            {
-                response.Success = false;
-                response.Message = "PIN must be exactly 6 digits";
-                return response;
-            }
-
             var securedPin = PinSecurityHelper.HashPin(pin.ToString());
 
             return await _userRepository.UpdateAsync(userId, user =>
@@ -144,15 +138,25 @@ namespace CBRegistration.BLL.Repositories
             return response;
         }
 
-        public async Task<BaseResponseModel<UserModel>> SetPhoneVerified(int userId, bool isVerified)
+        public async Task<BaseResponseModel<UserModel>> SetPhoneVerified(int userId)
         {
             try
             {   
-                //Verify via users phone with SMS gateway service
+                var isVerifiedModel = _userVerificationService.VerifyUserPhoneByCode(userId);
+
+                if(!isVerifiedModel.Success)
+                {
+                    return new BaseResponseModel<UserModel>
+                    {
+                        Success = false,
+                        Message = isVerifiedModel.Message,
+                        Errors = isVerifiedModel.Errors
+                    };
+                }
 
                 var result = await _userRepository.UpdateAsync(userId, user =>
                 {
-                    user.HasVerfiedPhone = isVerified;
+                    user.HasVerfiedPhone = isVerifiedModel.Success;
                 });
 
                 if (!result.Success)
@@ -168,7 +172,7 @@ namespace CBRegistration.BLL.Repositories
                 return new BaseResponseModel<UserModel>
                 {
                     Success = true,
-                    Message = $"User {(isVerified ? "enabled" : "disabled")} phone number successfully",
+                    Message = $"User {(isVerifiedModel.Success ? "enabled" : "disabled")} phone number successfully",
                     Data = result.Data
                 };
             }
@@ -183,15 +187,25 @@ namespace CBRegistration.BLL.Repositories
             }
         }
 
-        public async Task<BaseResponseModel<UserModel>> SetEmailVerified(int userId, bool isVerified)
+        public async Task<BaseResponseModel<UserModel>> SetEmailVerified(int userId)
         {
             try
             {
-                //Verify via users phone with SMTP server service 
+                var isVerifiedModel = _userVerificationService.VerifyUserEmailByCode(userId);
+
+                if (!isVerifiedModel.Success)
+                {
+                    return new BaseResponseModel<UserModel>
+                    {
+                        Success = false,
+                        Message = isVerifiedModel.Message,
+                        Errors = isVerifiedModel.Errors
+                    };
+                }
 
                 var result = await _userRepository.UpdateAsync(userId, user =>
                 {
-                    user.HasVerifiedEmail = isVerified;
+                    user.HasVerifiedEmail = isVerifiedModel.Success;
                 });
 
                 if (!result.Success)
@@ -207,7 +221,7 @@ namespace CBRegistration.BLL.Repositories
                 return new BaseResponseModel<UserModel>
                 {
                     Success = true,
-                    Message = $"User {(isVerified ? "enabled" : "disabled")} email successfully",
+                    Message = $"User {(isVerifiedModel.Success ? "enabled" : "disabled")} email successfully",
                     Data = result.Data
                 };
             }
